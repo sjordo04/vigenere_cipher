@@ -87,22 +87,12 @@ vector<vector<double>> crack_key(int m, vector<string> substrings){
     for (int g = 0; g < 26; g++){ //for each 0 <= g <= 25
         for (int h = 0; h < m; h++){ //for each substring position
             for (int i = 0; i < 26; i++){ //for each letter frequency
-                v_g[g][h] = q[mod_positive(i+g, 26)][h]; //let v_g be q cyclically shifted by g steps to the right
+                v_g[g][h] += p[i] * q[mod_positive(i - g, 26)][h]; //accumulate the dot product
             } 
         }
     }
 
-    //compute the dot product m_g=p*v_g for 0 <= g <= 25
-    std::vector<std::vector<double>> m_g(26, std::vector<double>(m, 0));
-    for (int g = 0; g < 26; g++){
-        for (int h = 0; h < m; h++){
-            m_g[g][h] = 0; // Reset to 0 before computing
-            for (int j = 0; j < 26; j++){
-                m_g[g][h] += p[j] * v_g[g][j];
-            }
-        }
-    }
-    return m_g;
+    return v_g;
 }
 
 string find_key(vector<vector<double>> m_g, int m){
