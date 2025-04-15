@@ -28,7 +28,7 @@ int mod_positive(int a, int b) {
 double index_of_coincidence(string text){
     std::vector<int> frequency(26, 0);
     int totalChars = 0;
-    
+
     // Count frequency of each letter
     for (char c : text) {
         if (std::isalpha(c)) {
@@ -36,7 +36,7 @@ double index_of_coincidence(string text){
             totalChars++;
         }
     }
-    
+
     //calculate index of coincidence
     double sum = 0.0;
     for (int count : frequency) {
@@ -52,7 +52,7 @@ double index_of_coincidence(string text){
 vector<double> calculate_ioc(int m, string cipher){
     vector<double> ioc;
     for (int i=0; i<m; i++){ //fill the array with ioc of substring_i, i = {1,...,m}
-        ioc.push_back(index_of_coincidence(build_substring(i+1, m, cipher)));
+        ioc.push_back(index_of_coincidence(build_substring(i, m, cipher)));
     }
     return ioc;
 }
@@ -61,7 +61,7 @@ vector<double> calculate_ioc(int m, string cipher){
 vector<string> build_substring_arr(int m, string cipher){
     vector<string> substrings;
     for (int i=0; i<m; i++){ //fill the array with ioc of substring_i, i = {1,...,m}
-        substrings.push_back(build_substring(i+1, m, cipher));
+        substrings.push_back(build_substring(i, m, cipher));
     }
     return substrings; 
 }
@@ -87,7 +87,7 @@ vector<vector<double>> crack_key(int m, vector<string> substrings){
     for (int g = 0; g < 26; g++){ //for each 0 <= g <= 25
         for (int h = 0; h < m; h++){ //for each substring position
             for (int i = 0; i < 26; i++){ //for each letter frequency
-                v_g[g][h] += p[i] * q[mod_positive(i - g, 26)][h]; //accumulate the dot product
+                v_g[g][h] += p[i] * q[mod_positive(i + g, 26)][h]; //accumulate the dot product
             } 
         }
     }
